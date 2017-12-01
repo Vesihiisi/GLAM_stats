@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Save usage stats for selected GLAM categories.
