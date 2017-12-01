@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-from datetime import datetime
-from lxml import etree
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 """Save usage stats for selected GLAM categories.
 
 Usage: python3 glam_stats.py --config cats.json
 """
-
+from datetime import datetime
+from lxml import etree
 import argparse
 import json
 import requests
