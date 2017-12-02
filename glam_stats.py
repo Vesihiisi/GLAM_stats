@@ -30,13 +30,20 @@ def make_url(catname):
     return base.format(catname.replace(" ", "+"))
 
 
+def calculate_percent(part, whole):
+    return round(100 * float(part) / float(whole), 2)
+
+
 def process_data(xmlblob):
     row = {}
     tree = etree.fromstring(xmlblob)
-    row["files"] = tree.get("images_in_category")
+    no_files = tree.get("images_in_category")
+    row["files"] = no_files
     for child_of_root in tree:
+        distinct_used = child_of_root.get("distinct_images")
+        row["percent_used"] = calculate_percent(distinct_used, no_files)
         row["total_usage"] = child_of_root.get("total_usage")
-        row["distinct_used"] = child_of_root.get("distinct_images")
+        row["distinct_used"] = distinct_used
     return row
 
 
@@ -72,10 +79,11 @@ def save_json_file(fname, data):
 
 
 def make_wikitable(data):
-    txt = '{| class="wikitable"\n|-\n'
+    txt = '{| class="wikitable sortable"\n|-\n'
     txt += "! {}\n".format("institution")
     txt += "! {}\n".format("files")
     txt += "! {}\n".format("used")
+    txt += "! {}\n".format("% used")
     for r in data:
         link_base = "[[:commons:Category:{}|{}]]"
         link = link_base.format(r["cat"], r["name"])
@@ -83,22 +91,25 @@ def make_wikitable(data):
         txt += "| {}\n".format(link)
         txt += "| {}\n".format(r["files"])
         txt += "| {}\n".format(r["distinct_used"])
+        txt += "| {}\n".format(r["percent_used"])
     txt += "|}\n"
     return txt
 
 
 def make_markdown(data):
-    txt = "| {} | {} | {} |\n".format("institution",
-                                      "files",
-                                      "used")
-    txt += "|---|---|---|\n"
+    txt = "| {} | {} | {} | {} |\n".format("institution",
+                                           "files",
+                                           "used",
+                                           "% used")
+    txt += "|---|---|---|---|\n"
     for r in data:
         link_base = "https://commons.wikimedia.org/wiki/Category:{}"
         link_str = link_base.format(r["cat"])
         link = "[{}]({})".format(r["name"], link_str)
-        txt += "| {} | {} | {} |\n".format(link,
-                                           r["files"],
-                                           r["distinct_used"])
+        txt += "| {} | {} | {} | {} |\n".format(link,
+                                                r["files"],
+                                                r["distinct_used"],
+                                                r["percent_used"])
     return txt
 
 
