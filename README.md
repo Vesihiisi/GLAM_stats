@@ -24,12 +24,16 @@ Saves result as json, wikitable and markdown files (like this one):
 | [Stockholms stadsarkiv](https://commons.wikimedia.org/wiki/Category:Images_by_Stockholms_stadsarkiv) | 7 | 4 | 57.14 |
 | [Stockholms stadsmuseum](https://commons.wikimedia.org/wiki/Category:Images_from_Stockholms_stadsmuseum) | 2 | 1 | 50.0 |
 
+## Installation
+
+Requirements: datetime, lxml, argparse, json, requests
+
 ## Usage
 
 You need a json file with the categories you want to analyze. See `se_config.json` for what it needs to look like. Then you pass it to the script:
 
 ```bash
-$ python3 glam_stats.py --config cats.json
+$ python3 glam_stats.py --config se_config.json
 ```
 
 ## Acknowledgments

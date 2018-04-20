@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Save usage stats for selected GLAM categories.
 
-Usage: python3 glam_stats.py --config cats.json
+Usage: python3 glam_stats.py --config se_config.json
 """
 from datetime import datetime
 from lxml import etree
@@ -31,7 +31,10 @@ def make_url(catname):
 
 
 def calculate_percent(part, whole):
-    return round(100 * float(part) / float(whole), 2)
+	if float(whole) > 0:
+		return round(100 * float(part) / float(whole), 2)
+	else:
+		return 0
 
 
 def process_data(xmlblob):
